@@ -3,70 +3,75 @@
 <head>
   <meta charset="UTF-8" />
   <title>OOPS! GAME SALE!</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
       background-color: #C0C0C0;
       font-family: 'Tahoma', sans-serif;
       text-align: center;
-      padding: 30px;
+      margin: 0;
+      padding: 0;
     }
 
     .window {
       background-color: #FFFFFF;
       border: 2px solid #000;
-      width: 320px;
-      max-width: 90%;
-      margin: 0 auto;
-      padding: 20px;
+      width: 95%;
+      max-width: 480px;
+      margin: 20px auto;
+      padding: 30px 20px;
       box-shadow: 5px 5px #000;
+      box-sizing: border-box;
     }
 
     .title-bar {
       background-color: #000080;
       color: #FFF;
-      padding: 5px;
+      padding: 10px;
       text-align: left;
       font-weight: bold;
+      font-size: 18px;
     }
 
     .logo {
-      max-width: 100px;
-      margin: 10px 0;
+      max-width: 150px;
+      margin: 20px 0;
     }
 
     .progress-container {
       position: relative;
       width: 100%;
-      height: 30px;
+      height: 40px;
       background: #808080;
       border: 2px inset #FFF;
-      margin: 20px 0;
+      margin: 30px 0;
     }
 
     .progress-bar {
       position: absolute;
       height: 100%;
-      width: 30px;
+      width: 40px;
       background: #0000FF;
     }
 
     button {
       font-family: 'Tahoma', sans-serif;
-      font-size: 16px;
-      padding: 10px 20px;
+      font-size: 18px;
+      padding: 15px 30px;
       background: #C0C0C0;
       border: 2px outset #FFF;
       cursor: pointer;
     }
 
     #result {
-      margin-top: 20px;
+      margin-top: 30px;
       font-weight: bold;
+      font-size: 20px;
     }
 
     #coupon {
-      margin-top: 10px;
-      font-size: 18px;
+      margin-top: 15px;
+      font-size: 22px;
       color: green;
     }
   </style>
@@ -75,7 +80,10 @@
   <div class="window">
     <div class="title-bar">OOPS! GAME SALE!</div>
     <img src="logo.png" alt="Oops Logo" class="logo" />
-    <p>바가 <b>중간</b>일 때 클릭!</p>
+
+    <!-- ✅ 다시 추가된 문구 -->
+    <p class="guide">바가 <b>중간</b>일 때 클릭!</p>
+
     <div class="progress-container">
       <div class="progress-bar" id="progress"></div>
     </div>
@@ -86,6 +94,7 @@
   </div>
 
   <script>
+    // JS는 그대로!
     const progress = document.getElementById('progress');
     const clickBtn = document.getElementById('clickBtn');
     const result = document.getElementById('result');
@@ -98,8 +107,11 @@
 
     function startBar() {
       interval = setInterval(() => {
-        position += direction * 10; // 속도 UP!
-        if (position >= 290 || position <= 0) {
+        position += direction * 10;
+        const containerWidth = document.querySelector('.progress-container').offsetWidth;
+        const barWidth = document.querySelector('.progress-bar').offsetWidth;
+
+        if (position >= containerWidth - barWidth || position <= 0) {
           direction *= -1;
         }
         progress.style.left = position + 'px';
@@ -112,8 +124,9 @@
 
     clickBtn.addEventListener('click', () => {
       stopBar();
-      const centerStart = 140; // 구간 좁게!
-      const centerEnd = 160;
+      const containerWidth = document.querySelector('.progress-container').offsetWidth;
+      const centerStart = containerWidth / 2 - 20;
+      const centerEnd = containerWidth / 2 + 20;
 
       if (position >= centerStart && position <= centerEnd) {
         result.textContent = '성공! 🎉';
@@ -139,5 +152,13 @@
 
     window.onload = startBar;
   </script>
+
+  <style>
+    /* 기존 스타일 + 가이드 문구 스타일 */
+    .guide {
+      margin: 10px 0 20px;
+      font-size: 16px;
+    }
+  </style>
 </body>
 </html>
