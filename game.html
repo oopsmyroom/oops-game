@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>OOPS! GAME SALE!</title>
+  <style>
+    body {
+      background-color: #C0C0C0;
+      font-family: 'Tahoma', sans-serif;
+      text-align: center;
+      padding: 30px;
+    }
+
+    .window {
+      background-color: #FFFFFF;
+      border: 2px solid #000;
+      width: 320px;
+      max-width: 90%;
+      margin: 0 auto;
+      padding: 20px;
+      box-shadow: 5px 5px #000;
+    }
+
+    .title-bar {
+      background-color: #000080;
+      color: #FFF;
+      padding: 5px;
+      text-align: left;
+      font-weight: bold;
+    }
+
+    .logo {
+      max-width: 100px;
+      margin: 10px 0;
+    }
+
+    .progress-container {
+      position: relative;
+      width: 100%;
+      height: 30px;
+      background: #808080;
+      border: 2px inset #FFF;
+      margin: 20px 0;
+    }
+
+    .progress-bar {
+      position: absolute;
+      height: 100%;
+      width: 30px;
+      background: #0000FF;
+    }
+
+    button {
+      font-family: 'Tahoma', sans-serif;
+      font-size: 16px;
+      padding: 10px 20px;
+      background: #C0C0C0;
+      border: 2px outset #FFF;
+      cursor: pointer;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    #coupon {
+      margin-top: 10px;
+      font-size: 18px;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <div class="window">
+    <div class="title-bar">OOPS! GAME SALE!</div>
+    <img src="logo.png" alt="Oops Logo" class="logo" />
+    <p>바가 <b>중간</b>일 때 클릭!</p>
+    <div class="progress-container">
+      <div class="progress-bar" id="progress"></div>
+    </div>
+    <button id="clickBtn">클릭!</button>
+    <div id="result"></div>
+    <div id="coupon"></div>
+    <button id="retryBtn" style="display:none;">다시 도전</button>
+  </div>
+
+  <script>
+    const progress = document.getElementById('progress');
+    const clickBtn = document.getElementById('clickBtn');
+    const result = document.getElementById('result');
+    const coupon = document.getElementById('coupon');
+    const retryBtn = document.getElementById('retryBtn');
+
+    let position = 0;
+    let direction = 1;
+    let interval;
+
+    function startBar() {
+      interval = setInterval(() => {
+        position += direction * 10; // 속도 UP!
+        if (position >= 290 || position <= 0) {
+          direction *= -1;
+        }
+        progress.style.left = position + 'px';
+      }, 15);
+    }
+
+    function stopBar() {
+      clearInterval(interval);
+    }
+
+    clickBtn.addEventListener('click', () => {
+      stopBar();
+      const centerStart = 140; // 구간 좁게!
+      const centerEnd = 160;
+
+      if (position >= centerStart && position <= centerEnd) {
+        result.textContent = '성공! 🎉';
+        coupon.textContent = '쿠폰 코드: OOPSGAMESALE';
+        clickBtn.style.display = 'none';
+      } else {
+        result.textContent = '실패! 😢';
+        retryBtn.style.display = 'inline-block';
+        clickBtn.style.display = 'none';
+      }
+    });
+
+    retryBtn.addEventListener('click', () => {
+      position = 0;
+      direction = 1;
+      progress.style.left = '0px';
+      result.textContent = '';
+      coupon.textContent = '';
+      clickBtn.style.display = 'inline-block';
+      retryBtn.style.display = 'none';
+      startBar();
+    });
+
+    window.onload = startBar;
+  </script>
+</body>
+</html>
