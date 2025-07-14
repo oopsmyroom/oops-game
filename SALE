@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>Oops! 게임 이벤트</title>
+  <style>
+    body { text-align: center; font-family: sans-serif; margin-top: 50px; }
+    button { padding: 20px 40px; font-size: 20px; }
+    #coupon { margin-top: 30px; font-size: 24px; color: green; font-weight: bold; }
+    #timer { font-size: 18px; margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <h1>5초 안에 버튼 5번 누르기!</h1>
+  <div id="timer">남은 시간: 5초</div>
+  <button id="gameButton">클릭!</button>
+  <div id="result"></div>
+  <div id="coupon"></div>
+
+  <script>
+    let count = 0;
+    let timeLeft = 5;
+    let timer;
+    const gameButton = document.getElementById('gameButton');
+    const result = document.getElementById('result');
+    const coupon = document.getElementById('coupon');
+    const timerDisplay = document.getElementById('timer');
+
+    function startTimer() {
+      timer = setInterval(() => {
+        timeLeft--;
+        timerDisplay.textContent = `남은 시간: ${timeLeft}초`;
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          gameButton.disabled = true;
+          if (count >= 5) {
+            result.textContent = '성공!';
+            coupon.textContent = '쿠폰 코드: OOPSGAMESALE';
+          } else {
+            result.textContent = '실패! 다시 시도하세요.';
+          }
+        }
+      }, 1000);
+    }
+
+    gameButton.addEventListener('click', () => {
+      if (count === 0 && timeLeft === 5) {
+        startTimer();
+      }
+      count++;
+      if (count >= 5) {
+        clearInterval(timer);
+        gameButton.disabled = true;
+        result.textContent = '성공!';
+        coupon.textContent = '쿠폰 코드: OOPSGAMESALE';
+      }
+    });
+  </script>
+</body>
+</html>
