@@ -38,6 +38,11 @@
       margin: 20px 0;
     }
 
+    .guide {
+      margin: 10px 0 20px;
+      font-size: 16px;
+    }
+
     .progress-container {
       position: relative;
       width: 100%;
@@ -52,6 +57,16 @@
       height: 100%;
       width: 40px;
       background: #0000FF;
+    }
+
+    .center-line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: red;
+      left: 50%;
+      transform: translateX(-50%);
     }
 
     button {
@@ -80,11 +95,10 @@
   <div class="window">
     <div class="title-bar">OOPS! GAME SALE!</div>
     <img src="logo.png" alt="Oops Logo" class="logo" />
-
-    <!-- ✅ 다시 추가된 문구 -->
     <p class="guide">바가 <b>중간</b>일 때 클릭!</p>
 
     <div class="progress-container">
+      <div class="center-line"></div> <!-- ✅ 중간선 추가 -->
       <div class="progress-bar" id="progress"></div>
     </div>
     <button id="clickBtn">클릭!</button>
@@ -94,7 +108,6 @@
   </div>
 
   <script>
-    // JS는 그대로!
     const progress = document.getElementById('progress');
     const clickBtn = document.getElementById('clickBtn');
     const result = document.getElementById('result');
@@ -107,7 +120,7 @@
 
     function startBar() {
       interval = setInterval(() => {
-        position += direction * 10;
+        position += direction * 16;
         const containerWidth = document.querySelector('.progress-container').offsetWidth;
         const barWidth = document.querySelector('.progress-bar').offsetWidth;
 
@@ -125,10 +138,16 @@
     clickBtn.addEventListener('click', () => {
       stopBar();
       const containerWidth = document.querySelector('.progress-container').offsetWidth;
-      const centerStart = containerWidth / 2 - 20;
-      const centerEnd = containerWidth / 2 + 20;
+      const barWidth = document.querySelector('.progress-bar').offsetWidth;
 
-      if (position >= centerStart && position <= centerEnd) {
+      // ✅ 성공 구간을 더 넓힘 (±40px)
+      const centerStart = containerWidth / 2 - 40;
+      const centerEnd = containerWidth / 2 + 40;
+
+      // ✅ 바의 중심 기준으로 판정
+      const barCenter = position + barWidth / 2;
+
+      if (barCenter >= centerStart && barCenter <= centerEnd) {
         result.textContent = '성공! 🎉';
         coupon.textContent = '쿠폰 코드: OOPSGAMESALE';
         clickBtn.style.display = 'none';
@@ -152,13 +171,5 @@
 
     window.onload = startBar;
   </script>
-
-  <style>
-    /* 기존 스타일 + 가이드 문구 스타일 */
-    .guide {
-      margin: 10px 0 20px;
-      font-size: 16px;
-    }
-  </style>
 </body>
 </html>
